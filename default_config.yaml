@@ -1,0 +1,115 @@
+# Knowledge Commons Default Configuration
+
+# User and System Identification
+user:
+  id: "user@example.com"  # Set this to your identifier
+  name: "Knowledge Commons User"
+
+# System Configuration
+system:
+  name: "Knowledge Commons"
+  version: "0.1.0"
+  data_dir: "./storage"  # Base directory for all data storage
+  temp_dir: "./tmp"      # Temporary files
+
+# Storage Configuration
+storage:
+  # Local file storage settings
+  local:
+    enabled: true
+    content_path: "${system.data_dir}/content"  # Where content files are stored
+    formats:
+      markdown:
+        enabled: true
+        extension: ".md"
+      json_ld:
+        enabled: true
+        extension: ".jsonld"
+      rdf:
+        enabled: true
+        extension: ".ttl"  # Turtle format
+    backup:
+      enabled: false
+      schedule: "daily"  # daily, weekly, manual
+      path: "${system.data_dir}/backups"
+
+# Database Configuration
+databases:
+  # Graph Database
+  graph:
+    type: "rdflib"  # rdflib, terminusdb, jena, etc.
+    enabled: true
+    path: "${system.data_dir}/graph"
+    format: "turtle"  # Format for local RDF storage
+    remote:
+      enabled: false
+      url: ""
+      api_key: ""  # Store actual keys in a separate .env file
+  
+  # Vector Database
+  vector:
+    type: "chroma"  # chroma, qdrant, etc.
+    enabled: true
+    path: "${system.data_dir}/vectors"
+    dimensions: 1536  # Depends on the embedding model
+    remote:
+      enabled: false
+      url: ""
+      api_key: ""
+
+# LLM Integration
+llm:
+  enabled: true
+  provider: "anthropic"  # anthropic, openai, local, etc.
+  model: "claude-3-opus-20240229"  # Depends on provider
+  api_key: ""  # Add to .env file or enter here (not recommended)
+  embedding_model: "all-mpnet-base-v2"  # Model for generating embeddings
+  cache:
+    enabled: true
+    path: "${system.data_dir}/llm_cache"
+
+# Federation Settings
+federation:
+  enabled: false  # Set to true when ready to enable federation
+  endpoint:
+    enabled: false
+    host: "localhost"
+    port: 8000
+    path: "/api"
+  connections: []  # List of connected systems
+  sharing_groups: []  # List of sharing groups
+
+# Schema Configuration
+schema:
+  base_uri: "https://knowledge-commons.example/schema/"
+  mappings_file: "config/schema_mappings.yaml"
+  default_context:
+    schema: "http://schema.org/"
+    rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+    xsd: "http://www.w3.org/2001/XMLSchema#"
+    dc: "http://purl.org/dc/elements/1.1/"
+    foaf: "http://xmlns.com/foaf/0.1/"
+    kc: "https://knowledge-commons.example/ontology#"
+
+# Query Engine
+query_engine:
+  default_search_limit: 10
+  hybrid_search:
+    enabled: true
+    vector_weight: 0.7
+    graph_weight: 0.3
+
+# Web Interface
+web_interface:
+  enabled: false
+  host: "localhost"
+  port: 8080
+  assets_dir: "./assets"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: "${system.data_dir}/logs/knowledge_commons.log"
+  max_size: 10  # MB
+  backup_count: 5

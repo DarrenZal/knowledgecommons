@@ -1,0 +1,297 @@
+# Schema Mappings for Knowledge Commons
+# This file defines how different entity types map to RDF and JSON-LD schemas
+
+# Person Schema
+Person:
+  rdf_type: "http://xmlns.com/foaf/0.1/Person"
+  schema_org: "http://schema.org/Person"
+  properties:
+    name:
+      rdf: "http://xmlns.com/foaf/0.1/name"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    email:
+      rdf: "http://xmlns.com/foaf/0.1/mbox"
+      schema_org: "http://schema.org/email"
+      type: "string"
+      required: false
+    website:
+      rdf: "http://xmlns.com/foaf/0.1/homepage"
+      schema_org: "http://schema.org/url"
+      type: "string"
+      required: false
+    description:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#comment"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+    image:
+      rdf: "http://xmlns.com/foaf/0.1/img"
+      schema_org: "http://schema.org/image"
+      type: "string"
+      required: false
+
+# Organization Schema
+Organization:
+  rdf_type: "http://xmlns.com/foaf/0.1/Organization"
+  schema_org: "http://schema.org/Organization"
+  properties:
+    name:
+      rdf: "http://xmlns.com/foaf/0.1/name"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    website:
+      rdf: "http://xmlns.com/foaf/0.1/homepage"
+      schema_org: "http://schema.org/url"
+      type: "string"
+      required: false
+    description:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#comment"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+    location:
+      rdf: "http://xmlns.com/foaf/0.1/based_near"
+      schema_org: "http://schema.org/location"
+      type: "string"
+      required: false
+
+# Note Schema
+Note:
+  rdf_type: "https://knowledge-commons.example/ontology#Note"
+  schema_org: "http://schema.org/CreativeWork"
+  properties:
+    title:
+      rdf: "http://purl.org/dc/elements/1.1/title"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    content:
+      rdf: "http://schema.org/text"
+      schema_org: "http://schema.org/text"
+      type: "string"
+      required: true
+    created:
+      rdf: "http://purl.org/dc/elements/1.1/created"
+      schema_org: "http://schema.org/dateCreated"
+      type: "datetime"
+      required: true
+    modified:
+      rdf: "http://purl.org/dc/elements/1.1/modified"
+      schema_org: "http://schema.org/dateModified"
+      type: "datetime"
+      required: false
+    tags:
+      rdf: "http://www.w3.org/ns/dcat#keyword"
+      schema_org: "http://schema.org/keywords"
+      type: "list"
+      required: false
+    format:
+      rdf: "http://purl.org/dc/elements/1.1/format"
+      schema_org: "http://schema.org/encodingFormat"
+      type: "string"
+      required: false
+
+# Event Schema
+Event:
+  rdf_type: "https://knowledge-commons.example/ontology#Event"
+  schema_org: "http://schema.org/Event"
+  properties:
+    name:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#label"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    startDate:
+      rdf: "http://schema.org/startDate"
+      schema_org: "http://schema.org/startDate"
+      type: "datetime"
+      required: true
+    endDate:
+      rdf: "http://schema.org/endDate"
+      schema_org: "http://schema.org/endDate"
+      type: "datetime"
+      required: false
+    location:
+      rdf: "http://schema.org/location"
+      schema_org: "http://schema.org/location"
+      type: "string"
+      required: false
+    description:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#comment"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+
+# Task Schema
+Task:
+  rdf_type: "https://knowledge-commons.example/ontology#Task"
+  schema_org: "http://schema.org/Action"
+  properties:
+    name:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#label"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    description:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#comment"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+    status:
+      rdf: "https://knowledge-commons.example/ontology#status"
+      schema_org: "http://schema.org/actionStatus"
+      type: "string"
+      required: true
+    dueDate:
+      rdf: "https://knowledge-commons.example/ontology#dueDate"
+      schema_org: "http://schema.org/endTime"
+      type: "datetime"
+      required: false
+    priority:
+      rdf: "https://knowledge-commons.example/ontology#priority"
+      schema_org: "http://schema.org/importance"
+      type: "string"
+      required: false
+
+# Project Schema
+Project:
+  rdf_type: "https://knowledge-commons.example/ontology#Project"
+  schema_org: "http://schema.org/CreativeWork"
+  properties:
+    name:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#label"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    description:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#comment"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+    startDate:
+      rdf: "http://schema.org/startDate"
+      schema_org: "http://schema.org/startDate"
+      type: "datetime"
+      required: false
+    endDate:
+      rdf: "http://schema.org/endDate"
+      schema_org: "http://schema.org/endDate"
+      type: "datetime"
+      required: false
+    status:
+      rdf: "https://knowledge-commons.example/ontology#status"
+      schema_org: "http://schema.org/creativeWorkStatus"
+      type: "string"
+      required: false
+
+# Concept Schema (for ideas, topics, etc.)
+Concept:
+  rdf_type: "http://www.w3.org/2004/02/skos/core#Concept"
+  schema_org: "http://schema.org/Thing"
+  properties:
+    name:
+      rdf: "http://www.w3.org/2004/02/skos/core#prefLabel"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    altLabels:
+      rdf: "http://www.w3.org/2004/02/skos/core#altLabel"
+      schema_org: "http://schema.org/alternateName"
+      type: "list"
+      required: false
+    definition:
+      rdf: "http://www.w3.org/2004/02/skos/core#definition"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+    broader:
+      rdf: "http://www.w3.org/2004/02/skos/core#broader"
+      schema_org: ""  # No direct Schema.org equivalent
+      type: "reference"
+      required: false
+    narrower:
+      rdf: "http://www.w3.org/2004/02/skos/core#narrower"
+      schema_org: ""  # No direct Schema.org equivalent
+      type: "reference"
+      required: false
+
+# Message Schema
+Message:
+  rdf_type: "https://knowledge-commons.example/ontology#Message"
+  schema_org: "http://schema.org/Message"
+  properties:
+    sender:
+      rdf: "http://schema.org/sender"
+      schema_org: "http://schema.org/sender"
+      type: "reference"
+      required: true
+    recipient:
+      rdf: "http://schema.org/recipient"
+      schema_org: "http://schema.org/recipient"
+      type: "reference"
+      required: true
+    dateSent:
+      rdf: "http://schema.org/dateSent"
+      schema_org: "http://schema.org/dateSent"
+      type: "datetime"
+      required: true
+    subject:
+      rdf: "http://schema.org/about"
+      schema_org: "http://schema.org/about"
+      type: "string"
+      required: false
+    messageBody:
+      rdf: "http://schema.org/text"
+      schema_org: "http://schema.org/text"
+      type: "string"
+      required: true
+    messageType:
+      rdf: "https://knowledge-commons.example/ontology#messageType"
+      schema_org: ""  # No direct Schema.org equivalent
+      type: "string"
+      required: false
+
+# Relationship Types
+Relationships:
+  # Person-to-Person relationships
+  knows:
+    rdf: "http://xmlns.com/foaf/0.1/knows"
+    schema_org: "http://schema.org/knows"
+    domain: "Person"
+    range: "Person"
+  
+  # Person-to-Organization relationships
+  memberOf:
+    rdf: "http://xmlns.com/foaf/0.1/member"
+    schema_org: "http://schema.org/memberOf"
+    domain: "Person"
+    range: "Organization"
+  
+  # Note relationships
+  mentions:
+    rdf: "https://knowledge-commons.example/ontology#mentions"
+    schema_org: "http://schema.org/mentions"
+    domain: "Note"
+    range: "*"  # Can mention any entity type
+  
+  isAbout:
+    rdf: "http://schema.org/about"
+    schema_org: "http://schema.org/about"
+    domain: "Note"
+    range: "*"  # Can be about any entity type
+  
+  # Task relationships
+  assignedTo:
+    rdf: "https://knowledge-commons.example/ontology#assignedTo"
+    schema_org: "http://schema.org/agent"
+    domain: "Task"
+    range: "Person"
+  
+  partOf:
+    rdf: "http://schema.org/isPartOf"
+    schema_org: "http://schema.org/isPartOf"
+    domain: "*"  # Many entity types can be part of something
+    range: "*"   # Many entity types can contain other entities
