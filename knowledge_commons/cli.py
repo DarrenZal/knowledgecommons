@@ -79,11 +79,20 @@ def cli(ctx, config):
     is_flag=True, 
     help="Force initialization even if data already exists"
 )
-@pass_context
-def init(ctx, force):
+@click.option(
+    "--config", 
+    type=click.Path(exists=True, file_okay=True, dir_okay=False, readable=True),
+    help="Path to configuration file (overrides the global option)"
+)
+@click.pass_context
+def init(ctx, force, config):
     """Initialize the Knowledge Commons system."""
-    config = ctx.config
-    data_dir = Path(config["system"]["data_dir"])
+    # If config is provided at command level, use it to override the global config
+    if config:
+        ctx.obj = KnowledgeCommonsContext(config)
+    
+    config_obj = ctx.obj.config
+    data_dir = Path(config_obj["system"]["data_dir"])
     
     if data_dir.exists() and not force:
         dirs = list(data_dir.iterdir())
@@ -97,14 +106,14 @@ def init(ctx, force):
     click.echo(f"Initializing Knowledge Commons in {data_dir}")
     
     # Initialize core components
-    ctx.init_components()
+    ctx.obj.init_components()
     
     # Create required directories
     for path in [
-        Path(config["storage"]["local"]["content_path"]),
-        Path(config["databases"]["graph"]["path"]),
-        Path(config["databases"]["vector"]["path"]),
-        Path(config["system"]["temp_dir"])
+        Path(config_obj["storage"]["local"]["content_path"]),
+        Path(config_obj["databases"]["graph"]["path"]),
+        Path(config_obj["databases"]["vector"]["path"]),
+        Path(config_obj["system"]["temp_dir"])
     ]:
         path.mkdir(exist_ok=True, parents=True)
         click.echo(f"Created directory: {path}")

@@ -1,0 +1,49 @@
+# Schema Mappings for Knowledge Commons
+# This file defines how different entity types map to RDF and JSON-LD schemas
+
+# Person Schema
+Person:
+  rdf_type: "http://xmlns.com/foaf/0.1/Person"
+  schema_org: "http://schema.org/Person"
+  properties:
+    name:
+      rdf: "http://xmlns.com/foaf/0.1/name"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    email:
+      rdf: "http://xmlns.com/foaf/0.1/mbox"
+      schema_org: "http://schema.org/email"
+      type: "string"
+      required: false
+    description:
+      rdf: "http://www.w3.org/2000/01/rdf-schema#comment"
+      schema_org: "http://schema.org/description"
+      type: "string"
+      required: false
+
+# Note Schema
+Note:
+  rdf_type: "https://knowledge-commons.example/ontology#Note"
+  schema_org: "http://schema.org/CreativeWork"
+  properties:
+    title:
+      rdf: "http://purl.org/dc/elements/1.1/title"
+      schema_org: "http://schema.org/name"
+      type: "string"
+      required: true
+    content:
+      rdf: "http://schema.org/text"
+      schema_org: "http://schema.org/text"
+      type: "string"
+      required: true
+    created:
+      rdf: "http://purl.org/dc/terms/created"
+      schema_org: "http://schema.org/dateCreated"
+      type: "datetime"
+      required: true
+    tags:
+      rdf: "http://www.w3.org/ns/dcat#keyword"
+      schema_org: "http://schema.org/keywords"
+      type: "list"
+      required: false

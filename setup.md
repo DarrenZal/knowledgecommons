@@ -38,29 +38,84 @@ pip install -e .
 
 # Install development dependencies
 pip install -e ".[dev]"
+
+# Install embedding model dependencies
+pip install transformers torch sentence-transformers
 ```
 
-### 4. Set Up Configuration
+### 4. Set Up Environment Variables
+
+Create a `.env` file in the project root directory:
+
+```bash
+# Create .env file
+touch .env
+```
+
+Add your API keys to the `.env` file:
+
+```
+ANTHROPIC_API_KEY=your-anthropic-api-key
+# Add other API keys as needed
+```
+
+Make sure to add `.env` to your `.gitignore` file to prevent accidentally committing sensitive information.
+
+### 5. Set Up Configuration
 
 ```bash
 # Copy the default configuration
 cp config/default_config.yaml config/my_config.yaml
 ```
 
-Edit `config/my_config.yaml` to customize your setup. At minimum, you should update:
+Edit `config/my_config.yaml` to customize your setup. Here's a recommended configuration:
 
-- `user.id` - Your identifier
-- `user.name` - Your name
-- `system.data_dir` - Where your knowledge data will be stored
+```yaml
+# User and System Identification
+user:
+  id: "your-email@example.com"
+  name: "Your Name"
 
-### 5. Initialize the System
+# System Configuration
+system:
+  name: "Knowledge Commons"
+  version: "0.1.0"
+  data_dir: "./storage"
+  temp_dir: "./tmp"
+
+# LLM Integration
+llm:
+  enabled: true
+  provider: "anthropic"
+  model: "claude-3-opus-20240229"
+  api_key: "your-api-key-here"  # Replace with your actual API key or use .env
+  
+  # Embedding configuration - using Stella for high-quality local embeddings
+  embeddings:
+    provider: "huggingface"
+    model: "neulab/stella-400m-v5"
+```
+
+### 6. Initialize the System
 
 ```bash
 # Create necessary directories and initial data structures
 knowledge-commons init --config config/my_config.yaml
 ```
 
-### 6. Running the Examples
+### 7. Using Stella for Embeddings
+
+Knowledge Commons is configured to use the Stella model for generating embeddings. Stella is a high-performance open-source embedding model that offers several advantages:
+
+- **High Quality**: Performs very well compared to commercial options
+- **Open Source**: MIT license allows free use for any purpose
+- **Multilingual**: Works with both English and other languages
+- **Local Processing**: No API calls or external dependencies required
+- **Efficient Size**: The 400M parameter version balances performance and resource usage
+
+When you first run a command that needs embeddings, the system will automatically download the model from Hugging Face. The model is about 800MB in size, so the initial download may take a few minutes depending on your internet connection.
+
+### 8. Running the Examples
 
 The project includes several example scripts to help you get started:
 
@@ -139,51 +194,49 @@ docker run -p 6363:6363 -v $(pwd)/terminusdb_data:/app/terminusdb/storage termin
 # Update your config accordingly
 ```
 
-## LLM Integration
+## Alternative Embedding Models
 
-For entity extraction and embedding generation, you can use:
+While Stella is configured as the default embedding model, you can use other options:
 
-### Using Anthropic Claude
-
-```bash
-# Install the Anthropic package
-pip install anthropic
-
-# Add your API key to your environment
-export ANTHROPIC_API_KEY="your-api-key"
-
-# Or update your config:
-# llm:
-#   provider: "anthropic"
-#   model: "claude-3-opus-20240229"
-#   api_key: "your-api-key"
-```
-
-### Using OpenAI
+### Using OpenAI Embeddings
 
 ```bash
-# Install the OpenAI package
-pip install openai
-
-# Add your API key to your environment
-export OPENAI_API_KEY="your-api-key"
+# Add your OpenAI API key to .env
+echo "OPENAI_API_KEY=your-api-key" >> .env
 
 # Update your config:
 # llm:
-#   provider: "openai"
-#   model: "gpt-4-turbo"
-#   api_key: "your-api-key"
+#   embeddings:
+#     provider: "openai"
+#     model: "text-embedding-3-small"
 ```
 
-### Using Local Models
+### Using Voyage AI Embeddings (Recommended by Anthropic)
 
 ```bash
-# Install sentence-transformers for local embeddings
-pip install sentence-transformers
+# Add your Voyage API key to .env
+echo "VOYAGE_API_KEY=your-api-key" >> .env
+
+# Install the Voyage client
+pip install voyageai
 
 # Update your config:
 # llm:
-#   embedding_model: "all-mpnet-base-v2"
+#   embeddings:
+#     provider: "voyage"
+#     model: "voyage-3-lite"  # or voyage-3-large for higher quality
+```
+
+### Using Sentence Transformers
+
+For other alternative models:
+
+```bash
+# Update your config:
+# llm:
+#   embeddings:
+#     provider: "sentence_transformers"
+#     model: "all-mpnet-base-v2"  # or another model name
 ```
 
 ## Customizing Schemas
@@ -195,6 +248,8 @@ The system uses schema mappings defined in `config/schema_mappings.yaml`. You ca
 - **Import Errors**: Ensure you've installed all dependencies with `pip install -e .`
 - **Configuration Issues**: Check that your config file has valid YAML syntax
 - **Database Connection Problems**: Verify that any external databases are running and accessible
-- **LLM API Errors**: Check that your API keys are correctly configured
+- **LLM API Errors**: Check that your API keys are correctly set in the `.env` file
+- **Environment Variables**: If API keys aren't being loaded, make sure python-dotenv is installed and the `.env` file is in the correct location
+- **Embedding Model Errors**: If you encounter issues with the Stella model, try using `sentence_transformers` as a fallback
 
 For more help, please open an issue on the GitHub repository.

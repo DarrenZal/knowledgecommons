@@ -44,6 +44,7 @@ setup(
         "markdown>=3.4.0",
         "beautifulsoup4>=4.12.0",
         "python-frontmatter>=1.0.0",
+        "python-dotenv>=1.0.0",
     ],
     extras_require={
         "dev": [
@@ -75,6 +76,7 @@ setup(
             "fastapi>=0.104.0",
             "uvicorn>=0.23.0",
             "langchain>=0.1.0",
+            "python-dotenv>=1.0.0",
         ],
     },
     entry_points={

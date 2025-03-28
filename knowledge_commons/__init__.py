@@ -14,6 +14,16 @@ import yaml
 from pathlib import Path
 from typing import Dict, Any, Optional
 
+# Import dotenv for loading environment variables
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent.parent / ".env"
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path)
+else:
+    print(f"Warning: .env file not found at {env_path}. Environment variables will not be loaded.")
+
 __version__ = "0.1.0"
 
 # Global configuration object
@@ -51,6 +61,9 @@ def get_config(config_path: Optional[str] = None) -> Dict[str, Any]:
     
     # Process environment variable interpolation in config
     _process_config_env_vars(_config)
+    
+    # Resolve references within config
+    _resolve_config_references(_config)
     
     return _config
 
